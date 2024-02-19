@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Account{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Welcome to your account, {{ user.username }}!</h1>
+        <img src="{{ asset('uploads/lien_image/' ~ user.getPhotoProfil()) }}" class="img-fluid rounded-circle" alt="{{ user.username }}'s profile picture" >
+        <a class="btn btn-primary" href="/">Back to homepage</a>
+        <div class="my-4">
+            <h2>My Information</h2>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email address:</strong> {{ user.email }}</p>
+            <p><strong>Your Balance:</strong> {{ user.solde }} €</p>
+            <a href="{{ path('app_account_edit') }}" class="btn btn-primary">Edit Account</a>
+        </div>
+
+        <div class="my-4">
+            <h2>My Articles</h2>
+            {% if articles|length > 0 %}
+                <ul class="list-group">
+                    {% for article in articles %}
+                        <li class="list-group-item">
+                            {{ article.nom }} - {{ article.prix }} €
+                            <a href="{{ path('app_account_remove_article', {'id': article.id}) }}" class="btn btn-danger btn-sm float-end">Remove</a>
+                            <a href="{{ path('app_account_edit_article', {'id': article.id}) }}" class="btn btn-primary btn-sm float-end me-2">Edit</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You haven't added any articles yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="my-4">
+            <h2>My Invoices</h2>
+            {% if invoices|length > 0 %}
+                <ul class="list-group">
+                    {% for invoice in invoices %}
+                        <li class="list-group-item">
+                            <strong>Billing Address:</strong> {{ invoice.adresseFacturation }} <br>
+                            <strong>Amount:</strong> {{ invoice.montant }} € <br>
+                            <strong>City:</strong> {{ invoice.villeFacturation }} <br>
+                            <strong>Postal Code:</strong> {{ invoice.codePostalFacturation }} <br>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You don't have any invoices yet.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

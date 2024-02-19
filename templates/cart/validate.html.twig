@@ -1,0 +1,107 @@
+{# templates/cart/validate.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Order Confirmation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ asset('path/to/your/custom.css') }}">
+{% endblock %}
+
+{% block body %}
+<header class="bg-dark text-white py-2">
+    <div class="container">
+        <h1 class="text-center">E-Commerce Site</h1>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/sell">Sell</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">View Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Account</a>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_admin') }}" class="nav-link btn btn-primary">Access Admin Interface</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% if app.user %}
+                <ul class="navbar-nav ml-auto">
+                    
+                    <li class="nav-item">
+                        <p class="nav-link">Logged in as {{ app.user.username }}</p>
+                    </li>
+                    <li class="nav-item">
+                        <img src="{{ asset('uploads/lien_image/' ~ app.user.getPhotoProfil()) }}" alt="Profile Photo" style="max-height: 40px;" class="rounded-circle ml-2">
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            {% else %}
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                </ul>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 border p-4 rounded bg-dark text-white">
+                <div class="text-center">
+                    <h1 class="mb-4">Order Confirmation</h1>
+
+                    <p>Total amount to pay: {{ totalAmount }} €</p>
+
+                    {{ form_start(form) }}
+                    {% set inputAttributes = {'class': 'form-control', 'style': 'height: 2rem;'} %}
+
+                    <div class="form-group">
+                        {{ form_label(form.adresse_facturation, 'Billing Address') }}
+                        {{ form_widget(form.adresse_facturation, {'attr': inputAttributes|merge({'placeholder': '123 Main St'})}) }}
+                        {{ form_errors(form.adresse_facturation) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.ville_facturation, 'Billing City') }}
+                        {{ form_widget(form.ville_facturation, {'attr': inputAttributes|merge({'placeholder': 'Paris'})}) }}
+                        {{ form_errors(form.ville_facturation) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.code_postal_facturation, 'Billing Postal Code') }}
+                        {{ form_widget(form.code_postal_facturation, {'attr': inputAttributes|merge({'placeholder': '75000'})}) }}
+                        {{ form_errors(form.code_postal_facturation) }}
+                    </div>
+
+                    {# ... #}
+                    <div class="mt-3">
+                        <a href="{{ path('app_home') }}" class="btn btn-danger mr-2">Back to Home</a>
+                        <button type="submit" class="btn btn-success">Confirm Order</button>
+                    </div>
+                    {{ form_end(form) }}
+
+                    <p class="small mt-3">(Your order is not lost if you return to the home page.)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

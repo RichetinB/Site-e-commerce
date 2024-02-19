@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Insufficient Balance{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="text-danger">Insufficient Balance</h1>
+        <p>Your balance is insufficient to make the purchase.</p>
+        
+        <a href="{{ path('app_home') }}" class="btn btn-secondary mt-3">Return to Home</a>
+    </div>
+{% endblock %}
